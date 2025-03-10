@@ -9,7 +9,7 @@ public:
             freq[t[i] - 'a']--;
         }
 
-        for(int i = 0; i < s.length(); i++){
+        for(int i = 0; i < 26; i++){
             if(freq[i] != 0) return false;
         }
 
