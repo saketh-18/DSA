@@ -1,57 +1,28 @@
 class MyStack {
-
-    queue<int> mainQueue;
-    queue<int> helperQueue;
-
-
 public:
+    deque<int> b;
     MyStack() {
         
     }
     
     void push(int x) {
-        mainQueue.push(x);
+        b.push_back(x);
     }
     
     int pop() {
-        int n = mainQueue.size();
-        if (n == 0) {
-            return -1;
-        }
+        int x = b.back();
+        b.pop_back();
+        return x;
 
-        for (int index = 1; index <= n - 1; index++) {
-            helperQueue.push(mainQueue.front());
-            mainQueue.pop();
-        }
 
-        int targetEle = mainQueue.front();
-        mainQueue.pop();
-
-        swap(mainQueue, helperQueue);
-        return targetEle;
     }
     
     int top() {
-        int n = mainQueue.size();
-        if (n == 0) {
-            return -1;
-        }
-
-        for (int index = 1; index <= n - 1; index++) {
-            helperQueue.push(mainQueue.front());
-            mainQueue.pop();
-        }
-
-        int targetEle = mainQueue.front();
-        mainQueue.pop();
-        helperQueue.push(targetEle);
-
-        swap(mainQueue, helperQueue);
-        return targetEle;
+       return b.back();
     }
     
-    bool ``empty() {
-        return mainQueue.size() == 0;
+    bool empty() {
+        return b.empty();
     }
 };
 
