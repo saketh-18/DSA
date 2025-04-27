@@ -27,6 +27,8 @@ public:
             temp = front;
         }
 
+        delete temp;
+
         return prev;
     }
 };
