@@ -14,30 +14,19 @@ public:
         if(head == nullptr){
             return nullptr;
         }
-        if(head->next == nullptr){
+        if(head -> next == nullptr){
             return head;
         }
-
-        vector<int> vec;
-        
         ListNode* temp = head;
-        ListNode* ans = head;
+        ListNode* prev = nullptr;
 
-        while(temp->next != nullptr){
-            vec.push_back(temp->val);
-            temp = temp->next;
-        }
-        vec.push_back(temp->val);
-
-        for(int i = 0 ; i < vec.size(); i++){
-            cout << vec[i];        
-        }
-        
-        for(int i = vec.size()-1; i >= 0; i--){
-            head->val = vec[i];
-            head = head->next;
+        while(temp != nullptr){
+            ListNode* front = temp->next;
+            temp->next = prev;
+            prev = temp;
+            temp = front;
         }
 
-        return ans;
+        return prev;
     }
 };
