@@ -14,10 +14,9 @@ public:
     }
     
     void pop() {
-        if(st.top() == minVal){
-            minSt.pop();
-        }
+        minSt.pop();
         st.pop();
+        minVal = !minSt.empty() ? minSt.top() : INT_MAX;
     }
     
     int top() {
