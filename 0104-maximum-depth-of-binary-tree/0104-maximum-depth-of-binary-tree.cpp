@@ -11,26 +11,12 @@
  */
 class Solution {
 public:
-    int depth(TreeNode* root , int count){
-        if(root->left == nullptr && root->right != nullptr){
-            return depth(root->right , count + 1);
-        }
-        else if(root->left != nullptr && root->right == nullptr){
-            return depth(root->left , count+1);
-        }  
-        else if(root->left != nullptr && root->right != nullptr){
-            return max(depth(root->left , count + 1) , depth(root->right , count + 1));
-        }
-        else {
-            return count;
-        }
-    }
-    int maxDepth(TreeNode* root) { 
-        if(root != nullptr){
-            return depth(root , 1);
-        }
-        else {
+    int maxDepth(TreeNode* root) {
+        if(root == nullptr){
             return 0;
         }
+        int left = maxDepth(root->left);
+        int right = maxDepth(root->right);
+        return max(left , right) + 1;
     }
 };
