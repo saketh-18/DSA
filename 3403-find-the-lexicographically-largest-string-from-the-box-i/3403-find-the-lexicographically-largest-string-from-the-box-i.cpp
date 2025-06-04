@@ -12,7 +12,7 @@ public:
         queue<int> que;
         string ans = "";
         char maxChar = 'a';
-        vector<string> res;
+        // vector<string> res;
         int maxLen = word.length() - numFriends + 1;
         for (int i = 0; i < word.length(); i++) {
             if (word[i] > maxChar) {
@@ -26,24 +26,23 @@ public:
             }
         }
 
+        string finalAns = "";
         while (!que.empty()) {
             int index = que.front();
             que.pop();
             int finalLen = min(maxLen, static_cast<int>(word.length() - index));
 
-            for (int i = index; i < index + finalLen; i++) {
-                ans += word[i];
+            // for (int i = index; i < index + finalLen; i++) {
+            //     ans += word[i];
+            // }
+            ans = word.substr(index , finalLen);
+            if (ans > finalAns) {
+                finalAns = ans;
             }
-            res.push_back(ans);
             ans = "";
+
         }
 
-        string finalAnswer = "";
-        for (auto& str : res) {
-            if (str > finalAnswer) {
-                finalAnswer = str;
-            }
-        }
-        return finalAnswer;
+        return finalAns;
     }
 };
