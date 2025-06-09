@@ -1,32 +1,15 @@
 class Solution {
 public:
-    bool valid(string paren) {
-    stack<char> st;
-
-    for(int i = 0; i < paren.size(); i++) {
-        if(paren[i] == '(') {
-            st.push('(');
-        } 
-        else if(paren[i] == ')') {
-            if(st.empty() || st.top() != '(') {
-                return false;
-            }
-            st.pop(); 
-        }
-    }
-    return st.empty();
-}
+    
     void recursion(string curr , int n  , int l , int r , vector<string> &res){
         if(l == n && r == n){
-            if(valid(curr)){
-                res.push_back(curr);
-            }
+            res.push_back(curr);
             return;
         }
         if(l < n){
             recursion(curr + '(' , n , l+1 , r , res);
         }
-        if(r < n){
+        if(r < l){
             recursion(curr + ')' , n , l , r+1 , res);
         }
     }
