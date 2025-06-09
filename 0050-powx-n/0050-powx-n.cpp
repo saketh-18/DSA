@@ -1,23 +1,20 @@
 class Solution {
 public:
+    double recursion(long long n , double ans , double x){
+        if(n <= 0) return ans;
+        if(n%2 == 1) ans = ans*x;
+        x = x*x;
+        return recursion(n/2,ans , x);
+    }
     double myPow(double x, int n) {
-        long long nn = n;  // Use long long to avoid overflow for INT_MIN
+        long long nTemp = n;
         double ans = 1.0;
-        bool isNegative = false;
-        
-        if (nn < 0) {
-            isNegative = true;
-            nn = -nn;
+        bool isNeg = false;
+        if(n < 0){
+            nTemp = -nTemp;
+            isNeg = true;
         }
-
-        while (nn > 0) {
-            if (nn % 2 == 1) {
-                ans *= x;
-            }
-            x *= x;
-            nn /= 2;
-        }
-
-        return isNegative ? 1.0 / ans : ans;
+        double res = recursion(nTemp , ans , x);
+        return isNeg ? 1.0 / res: res;
     }
 };
