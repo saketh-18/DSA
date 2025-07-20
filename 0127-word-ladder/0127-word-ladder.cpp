@@ -15,16 +15,15 @@ public:
 
             if(word == endWord) return steps;
             for(int i = 0; i < word.length(); i++){
-                string original = word;
-                for(int j = 0 ; j < 26; j++){
-                    word[i] = j + 97;
-                    auto it = st.find(word);
-                    if(it != st.end()){
-                        st.erase(word);
+                char original = word[i];
+                for(char c = 'a'; c <= 'z'; c++){
+                    word[i] = c;
+                    if(st.find(word) != st.end()) {
                         q.push({word , steps + 1});
+                        st.erase(word);
                     }
                 }
-                word = original;
+                word[i] = original;
             }
 
         }
