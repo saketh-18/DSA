@@ -1,42 +1,40 @@
 class Solution {
 public:
     int numEnclaves(vector<vector<int>>& grid) {
-        int ans = 0;
-        int rows = grid.size() - 1;
-        int cols = grid[0].size() - 1;
-        queue<pair<int , int>> que;
-        // vector<vector<bool>> visited(rows + 1 , vector<bool>())
+        //start from the edge 1s
+        // mark all edge ones and perform bfs for the connected ones;
 
-        for(int i = 0 ; i <= rows; i++){
-            for(int j = 0; j <= cols; j++){
+        int rows = grid.size();
+        int cols = grid[0].size();
+        queue<pair<int , int>> que;
+        int ans = 0;
+        for(int i = 0 ; i < grid.size(); i++){
+            for(int j = 0 ; j < grid[i].size(); j++){
                 if(grid[i][j] == 1){
                     ans++;
-                    if((i == 0 || j == 0 || i == rows  || j == cols)){
-                        que.push({i , j});
+                    if(i == 0 || i == rows - 1 || j == 0 || j == cols-1){
                         ans--;
+                        que.push({i , j});
                         grid[i][j] = -1;
                     }
                 }
             }
         }
 
-        
-
         while(!que.empty()){
-            int r = que.front().first;
-            int c = que.front().second;
+            int row = que.front().first;
+            int col = que.front().second;
             que.pop();
 
-            vector<pair<int , int>> dir = {{-1 , 0} , {1 , 0} , {0 , -1} , {0 , 1}};
-
+            vector<pair<int ,int>> dir = {{1,0},{-1,0},{0,-1},{0,1}};
             for(auto i : dir){
-                int nr = r + i.first;
-                int nc = c + i.second;
+                int nr = row + i.first;
+                int nc = col + i.second;
 
-                if(nc >= 0 && nc <= cols && nr >= 0 && nr <= rows){
-                    if(grid[nr][nc] == 1){
-                        que.push({nr , nc});
+                if(nr >= 0 && nr < rows && nc >= 0 && nc < cols){
+                    if(grid[nr][nc] == 1) {
                         ans--;
+                        que.push({nr , nc});
                         grid[nr][nc] = -1;
                     }
                 }
@@ -44,6 +42,6 @@ public:
 
         }
         return ans;
-
+        
     }
 };
