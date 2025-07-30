@@ -21,11 +21,12 @@ public:
         }
 
         // if(que.size() == 0) return true;
-        vector<int> topo;
+        // vector<int> topo;
+        int cnt = 0;
         while(!que.empty()){
             int node = que.front();
             que.pop();
-            topo.push_back(node);
+            cnt++;
 
             for(int i : adj[node]){
                 id[i]--;
@@ -33,6 +34,6 @@ public:
                 if(id[i] == 0) que.push(i);
             }
         }
-        return topo.size() == nums;
+        return cnt == nums;
     }
 };
