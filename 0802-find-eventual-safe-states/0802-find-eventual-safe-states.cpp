@@ -1,47 +1,39 @@
 class Solution {
 public:
+    bool dfs(int node, vector<vector<int>>& graph, vector<int>& state) {
+        // Base cases
+        if (state[node] == 1) return false;  // already visiting → cycle detected
+        if (state[node] == 2) return true;   // already marked safe
+
+        // Mark as visiting (currently in path)
+        state[node] = 1;
+
+        for (int neighbor : graph[node]) {
+            if(state[neighbor] == 1) return false;
+            if (state[neighbor] == 0) {
+                // If any neighbor is unsafe, then this node is unsafe
+                if(!dfs(neighbor , graph , state)){
+                return false;
+                }
+            }
+        }
+
+        // Mark as safe
+        state[node] = 2;
+        return true;
+    }
+
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-        //reverse the graph
-        //measure indegree of each node in reversed graph (outdegree)
-        //normal topological sort
+        int n = graph.size();
+        vector<int> state(n, 0);  // 0: unvisited, 1: visiting, 2: safe
+        vector<int> result;
 
-        //convert incoming into outgoing edges and vice versa
-
-        vector<vector<int>> ng(graph.size() , vector<int>(0));
-        for(int i = 0 ; i < graph.size(); i++){
-            for(int j = 0 ; j < graph[i].size(); j++){
-                ng[graph[i][j]].push_back(i);
+        for (int i = 0; i < n; i++) {
+            if (dfs(i, graph, state)) {
+                result.push_back(i);
             }
         }
 
-        vector<int> id(graph.size());
-        for(int i = 0 ; i < ng.size(); i++){
-            for(int j = 0 ; j < ng[i].size(); j++){
-                id[ng[i][j]]++;
-            }
-        }
-
-        queue<int> que;
-        for(int i = 0 ; i < id.size(); i++){
-            if(id[i] == 0) que.push(i);
-        }
-
-        while(!que.empty()){
-            int node = que.front();
-            que.pop();
-
-            for(int i : ng[node]){
-                id[i]--;
-                if(id[i] == 0) que.push(i);
-            }
-        }
-
-        vector<int> ans;
-        for(int i = 0 ; i < id.size(); i++){
-            if(id[i] == 0){
-                ans.push_back(i);
-            }
-        }
-        return ans;
+        return result;
     }
 };
