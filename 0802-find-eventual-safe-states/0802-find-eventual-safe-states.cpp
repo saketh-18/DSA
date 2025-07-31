@@ -9,7 +9,7 @@ public:
 
         vector<vector<int>> ng(graph.size() , vector<int>(0));
         for(int i = 0 ; i < graph.size(); i++){
-            for(int j = 0 ; j < graph[i].size(); i++){
+            for(int j = 0 ; j < graph[i].size(); j++){
                 ng[graph[i][j]].push_back(i);
             }
         }
@@ -32,6 +32,7 @@ public:
 
             for(int i : ng[node]){
                 id[i]--;
+                if(id[i] == 0) que.push(i);
             }
         }
 
