@@ -13,13 +13,13 @@ public:
         vector<int> dist(n+1, INT_MAX);
         priority_queue<pair<int,int> , vector<pair<int,int>> , greater<pair<int,int>>> pq;
 
+        dist[0] = -1;
         pq.push({0,k});
         while(!pq.empty()){
             auto [cost,node] = pq.top();
             pq.pop();
             if(dist[node] < cost) continue;
             dist[node] = cost;
-            dist[0] = -1;
 
             for(auto i : adj[node]){
                 if(dist[i.first] > cost + i.second){
