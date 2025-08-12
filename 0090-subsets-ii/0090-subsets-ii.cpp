@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void dfs(int i, vector<int> cur, vector<vector<int>> &ans, vector<int> &nums){
+    void dfs(int i, vector<int> &cur, vector<vector<int>> &ans, vector<int> &nums){
         if(i == nums.size()) {
             ans.push_back(cur);
             return ;
@@ -22,7 +22,7 @@ public:
         sort(nums.begin(),nums.end());
         vector<vector<int>> ans;
         vector<int> cur;
-        dfs(0,{},ans,nums);
+        dfs(0,cur,ans,nums);
         return ans;
     }
 };
