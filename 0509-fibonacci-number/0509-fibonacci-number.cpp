@@ -1,17 +1,13 @@
 class Solution {
 public:
-    int fibh(vector<int> &dp, int n){
-        if(n <= 1) return n;
-        else {
-            if(dp[n-1] != -1 && dp[n-2] != -1) return dp[n-1] + dp[n-2];
-            if(dp[n-1] != -1) return dp[n-1] + fibh(dp,n-2);
-            if(dp[n-2] != -1) return fibh(dp,n-1) + dp[n-2]; 
-            dp[n] = fibh(dp,n-1) + fibh(dp,n-2);
-            return dp[n];
-        }  
-    }
     int fib(int n) {
-        vector<int> dp(n+1,-1);
-        return fibh(dp,n);
+        i(n <= 1) return n;
+        int prev2 = 0 , prev = 1;
+        for(int i = 2 ; i <= n; i++){
+            int cur = prev + prev2;
+            prev2 = prev;
+            prev = cur;
+        }
+        return prev;
     }
 };
