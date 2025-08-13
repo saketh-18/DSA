@@ -1,9 +1,13 @@
 class Solution {
 public:
     int climbStairs(int n) {
-        if(n == 0) return 1;
-
-        if(n-1 >= 0 && n-2 >= 0) return climbStairs(n-1) + climbStairs(n-2);
-        return climbStairs(n-1);
+        vector<int> dp(n+1);
+        int prev2 = 0, prev = 1;
+        for(int i = 1; i <= n; i++){
+            int cur = prev + prev2;
+            prev2 = prev;
+            prev = cur;
+        }
+        return prev;
     }
 };
