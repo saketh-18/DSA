@@ -21,8 +21,9 @@ public:
         //use recursion();
         int m = obstacleGrid.size()-1;
         int n = obstacleGrid[0].size()-1;
-        vector<vector<int>> dp(m+1,vector<int>(n+1,-1));
         if(obstacleGrid[m][n] == 1) return 0;
+        vector<vector<int>> dp(m+1,vector<int>(n+1,-1));
+        
         return dfs(m,n,obstacleGrid,dp);
     }
 };
