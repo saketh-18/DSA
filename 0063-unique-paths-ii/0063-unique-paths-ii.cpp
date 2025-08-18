@@ -17,13 +17,25 @@ public:
       }
       return dp[i][j] = top + left;
     }
-    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
         //use recursion();
-        int m = obstacleGrid.size()-1;
-        int n = obstacleGrid[0].size()-1;
-        if(obstacleGrid[m][n] == 1) return 0;
-        vector<vector<int>> dp(m+1,vector<int>(n+1,-1));
-        
-        return dfs(m,n,obstacleGrid,dp);
+        int m = grid.size()-1;
+        int n = grid[0].size()-1;
+        if(grid[m][n] == 1) return 0;
+        if(grid[0][0] == 1) return 0;
+        vector<vector<int>> dp(m+1,vector<int>(n+1,0));
+        //tabulation approach => 
+        dp[0][0] = 1;
+        for(int i = 0 ; i <= m; i++){
+          for(int j = 0 ; j <= n; j++){
+            if(i == 0 && j == 0) continue;
+            if(grid[i][j] == 1) continue;
+
+            if(i > 0) dp[i][j] += dp[i-1][j];
+            if(j > 0) dp[i][j] += dp[i][j-1];
+
+          }
+        }
+        return dp[m][n];
     }
 };
