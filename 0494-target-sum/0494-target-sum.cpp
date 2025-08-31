@@ -1,18 +1,16 @@
 class Solution {
 public:
-    void dfs(vector<int> &nums, int exp, int &k, int &ans, int i){
-        if(i == nums.size()){
-            if(exp == k) ans++;
-            return;
+    int dfs(int i, int sum, int &target, vector<int> &nums){
+        if(i >= nums.size()){
+            if(target == sum) return 1;
+            return 0;
         }
 
-        dfs(nums,exp+nums[i],k,ans,i+1);
-        dfs(nums,exp-nums[i],k,ans,i+1);
+        int plus = dfs(i+1,sum+nums[i],target,nums);
+        int minus = dfs(i+1,sum-nums[i],target,nums);
+        return plus + minus;
     }
     int findTargetSumWays(vector<int>& nums, int target) {
-        int ans = 0;
-        dfs(nums,-nums[0],target,ans,1);
-        dfs(nums,nums[0],target,ans,1);
-        return ans;
+        return dfs(0,0,target, nums);
     }
 };
