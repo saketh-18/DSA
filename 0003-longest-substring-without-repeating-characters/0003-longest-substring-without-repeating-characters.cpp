@@ -1,16 +1,25 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        int count = 0;
-        for(int i = 0 ; i < s.length(); i++){
-            vector<int> hash(256 , 0);
-            // count = 0;
-            for(int j = i; j < s.length(); j++){
-                if(hash[s[j]] > 0) break;
-                hash[s[j]]++;
-                count = max(count , j - i + 1);
+        unordered_map<char,int> first;
+        int i = 0;
+        int cur = 1;
+        int ans = 0, count = 0;
+        int start = 0;
+        while(i < s.length()){
+            if(first[s[i]] != cur){
+                first[s[i]] = cur;
+                count++;
+                ans = max(count,ans);
+            } else {
+                start++;
+                i = start;
+                cur++;
+                first[s[i]] = cur;
+                count = 1;
             }
-        }
-        return count;
+            i++;
+        }   
+        return ans;
     }
 };
