@@ -14,7 +14,6 @@ public:
                 }
             }
         }
-        int ans = (n-dp[n][m]) + (m - dp[n][m]);
-        return ans;
+        return (n-dp[n][m]) + (m - dp[n][m]);
     }
 };
