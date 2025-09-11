@@ -1,27 +1,30 @@
 class Solution {
 public:
-    int minEatingSpeed(vector<int>& v, int h) {
-        int maxnum = 0  , ans = 0;
-    for(int i = 0 ; i < v.size(); i++){
-        maxnum = max(maxnum , v[i]);
-    }
+    int minEatingSpeed(vector<int>& piles, int h) {
+        //find max element and specify range of binary search
 
-    // range of ans would be from 1 to maxnum;
-    int low = 1 , high = maxnum;
-    while(low <= high){
-        int mid = low + (high - low) / 2;
-        long long hours = 0;
-        for(int i = 0 ; i < v.size(); i++){
-            hours += (v[i] + mid - 1) / mid; 
+        int up = INT_MIN;
+        for(int i : piles){
+            up = max(i,up);
         }
-        if(hours <= h){
-            ans = mid;
-            high = mid - 1;
+        int mod = INT_MAX;
+        int i = 1;
+        int ans = INT_MAX;
+        int mid = 0;
+        while(i <= up){
+            mid = (i+up)/2;
+            long long cur = 0;
+            for(int i : piles){
+                if(i%mid == 0)  cur += (i/mid)%mod;
+                else cur += (i/mid)+1;
+            }
+            if(cur > h){
+                i = mid + 1;
+            } else{
+                 up = mid - 1;
+                 ans = mid;
+            }
         }
-        else {
-            low = mid + 1;
-        }
-    }
-    return ans;
+        return ans;
     }
 };
