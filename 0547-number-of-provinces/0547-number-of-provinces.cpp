@@ -1,29 +1,24 @@
 class Solution {
 public:
-    int findCircleNum(vector<vector<int>>& isConnected) {
-        vector<int> visited(isConnected.size() , 0);
-        int province = 0;
-        int n = isConnected.size();
-        int i = 0;
-        for(int j = 0 ; j < n ; j++){
-            stack<int> st;
-            if(visited[j] == 0){                
-                st.push(j);
-                visited[j] = 1;
-            while(!st.empty()){
-                int temp = st.top();
-                st.pop();
+    void dfs(int node , vector<int> &visited , vector<vector<int>> &graph){
+        visited[node] = 1;
 
-                for(int i = 0 ; i < isConnected.size(); i++){
-                    if(isConnected[temp][i] == 1 && visited[i] == 0){
-                        st.push(i);
-                        visited[i] = 1;
-                    }
-                }
+        for(int i = 0 ; i < graph.size(); i++){
+            if(graph[node][i] == 1 && visited[i] == 0){
+                dfs(i , visited , graph);
             }
-            province++;
-        } 
-    } 
+        }
+    }
+
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        vector<int> vis(isConnected.size() , 0);
+        int province = 0;
+        for(int i = 0 ; i < vis.size(); i++){
+            if(vis[i] == 0) {
+                dfs(i , vis , isConnected);
+                province++;
+            }
+        }
         return province;
     }
 };
