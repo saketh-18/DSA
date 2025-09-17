@@ -1,14 +1,25 @@
 class Solution {
 public:
-    int maxProfit(vector<int>& prices) {
-        int profit = 0;
-
-        for(int i = 1; i < prices.size(); i++){
-            if(prices[i] > prices[i-1]){
-                profit += prices[i] - prices[i-1];
-            }
+    int rec(int i, int j, vector<int> &prices){
+        if(j == prices.size()){
+            i++;
+            j = i + 1;
+        }
+        if(i == prices.size()){
+            return 0;
         }
 
-        return profit;
+        int left = prices[j]-prices[i];
+        if(left > 0){
+            return left + rec(j,j+1,prices);
+        } else {
+            return rec(i+1,j+1,prices);
+        }
+    }
+    int maxProfit(vector<int>& prices) {
+        //for every day there are two possibilities 
+        //to buy at the current prices and to sell at the current price
+        //and store the profit  
+        return rec(0,1,prices);
     }
 };
