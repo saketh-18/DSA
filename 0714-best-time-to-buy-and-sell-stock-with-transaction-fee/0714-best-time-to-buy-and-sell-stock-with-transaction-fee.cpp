@@ -11,17 +11,19 @@ public:
         return dp[i][buy] = max(prices[i] - fee + rec(i+1,prices,fee,1-buy,dp) , rec(i+1,prices,fee,buy,dp));
     }
     int maxProfit(vector<int>& prices, int fee) {
-        vector<vector<int>> dp(prices.size()+1,vector<int>(2,0));
+        vector<int> dp = {0,0};
         int n = prices.size();
         for(int i = n-1;i >= 0; i--){
+            vector<int> cur = {0,0};
             for(int buy = 0; buy <= 1; buy++){
                 if(buy == 0){
-                    dp[i][buy] = max(-prices[i] + dp[i+1][1-buy] , dp[i+1][buy]);
+                    cur[buy] = max(-prices[i] + dp[1-buy] , dp[buy]);
                 } else {
-                    dp[i][buy] = max(prices[i] - fee + dp[i+1][1-buy] , dp[i+1][buy]);
+                    cur[buy] = max(prices[i] - fee + dp[1-buy] , dp[buy]);
                 }
             }
+            dp = cur;
         }
-        return dp[0][0];
+        return dp[0];
     }
 };
