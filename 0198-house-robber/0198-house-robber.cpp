@@ -1,17 +1,19 @@
 class Solution {
 public:
-    int dfs(int i, vector<int> &nums, vector<int> &dp){
-        if(i == 0) return nums[i];
-
-        if(i < 0) return 0;
-
-        if(dp[i] != -1) return dp[i];
-        int skip = dfs(i-1,nums,dp);
-        int take = nums[i] + dfs(i-2,nums,dp);
-        return dp[i] = max(take,skip);
-    }
     int rob(vector<int>& nums) {
-        vector<int> dp(nums.size(), -1);
-        return dfs(nums.size() - 1, nums, dp);
+        if(nums.size() == 1) return nums[0];
+        vector<int> dp(nums.size(), 0);
+
+        //tabulation 
+        //base case
+        dp[0] = nums[0];
+        int skip = 0;
+        int take = nums[1];
+        for(int i = 1; i < nums.size(); i++){
+            skip = dp[i-1];
+            if(i > 1) take = nums[i] + dp[i-2];
+            dp[i] = max(skip,take);
+        }
+        return dp[nums.size()-1];
     }
 };
