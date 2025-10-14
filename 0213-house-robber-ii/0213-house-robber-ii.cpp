@@ -31,10 +31,34 @@ public:
     }
     int rob(vector<int>& nums) {
         if(nums.size() == 1) return nums[0];
-        vector<int> dp(nums.size(), -1);
-        int ans1 = dfs(nums.size() - 2, nums,dp);
-        fill(dp.begin(), dp.end() , -1);
-        int ans2 = dfs1(nums.size()-1, nums,dp);
-        return max(ans1, ans2);
+        vector<int> dp(nums.size(), 0);
+        
+        dp[0] = nums[0];
+
+        //without last element
+        int take = 0;
+        int not_take = 0;
+        for(int i = 1; i < nums.size() - 1; i++){
+            take = nums[i];
+            if(i > 1) take += dp[i-2];
+            not_take = dp[i-1];
+            dp[i] = max(not_take,take);
+        }
+
+        int ans1 = dp[nums.size() - 2];
+        //without first element
+        fill(dp.begin(),dp.end(),0);
+        dp[1] = nums[1];
+        for(int i = 2; i < nums.size(); i++){
+            take = nums[i];
+            if(i > 2) take += dp[i-2];
+            not_take = dp[i-1];
+
+            dp[i] = max(take,not_take);
+        }
+
+        int ans2 = dp[nums.size() - 1];
+
+        return max(ans2, ans1);
     }
 };
