@@ -1,41 +1,32 @@
 class Solution {
 public:
-    int dfs(int i , int j, vector<vector<int>> &grid, vector<vector<int>> &dp){
-      if(i == 0 && j == 0) return dp[0][0] = 1;
-      if(i < 0 || j < 0) return 0;
+    int dfs(int i, int j, vector<vector<int>> &grid, vector<vector<int>> &dp){
+        if(i == 0 && j == 0) return 1;
 
-      //should go top and left;
-      //only call dfs if there is no obstacle
+        if(i < 0 || j < 0) return 0;
 
-      int top = 0 , left = 0;
-      if(dp[i][j] != -1) return dp[i][j];
-      if(i > 0 && grid[i-1][j] != 1){
-        top = dfs(i-1,j,grid,dp);
-      }
-      if(j > 0 && grid[i][j-1] != 1){
-        left = dfs(i,j-1,grid,dp);
-      }
-      return dp[i][j] = top + left;
-    }
-    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
-        //use recursion();
-        int m = grid.size()-1;
-        int n = grid[0].size()-1;
-        if(grid[m][n] == 1) return 0;
-        if(grid[0][0] == 1) return 0;
-        vector<vector<int>> dp(m+1,vector<int>(n+1,0));
-        //tabulation approach => 
-        dp[0][0] = 1;
-        for(int i = 0 ; i <= m; i++){
-          for(int j = 0 ; j <= n; j++){
-            if(i == 0 && j == 0) continue;
-            if(grid[i][j] == 1) continue;
+        if(dp[i][j] != -1) return dp[i][j];
 
-            if(i > 0) dp[i][j] += dp[i-1][j];
-            if(j > 0) dp[i][j] += dp[i][j-1];
-
-          }
+        int left = 0, top = 0;
+        if(i-1 >= 0 && i - 1 < grid.size()){
+            if(grid[i-1][j] == 0){
+                top = dfs(i-1,j,grid,dp);
+            }   
         }
-        return dp[m][n];
+
+        if(j-1 >= 0 && j-1 < grid[0].size()){
+            if(grid[i][j-1] == 0){
+                left = dfs(i,j-1,grid,dp);
+            }
+        }
+
+        return dp[i][j] = top+left;
+    }
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        int m = obstacleGrid.size();
+        int n = obstacleGrid[0].size();
+       if (obstacleGrid[m-1][n-1] == 1) return 0;
+        vector<vector<int>> dp(m, vector<int>(n,-1));
+        return dfs(obstacleGrid.size()-1, obstacleGrid[0].size()-1, obstacleGrid, dp);
     }
 };
