@@ -1,19 +1,16 @@
 class Solution {
 public:
     bool isPalindrome(string s) {
-        stack<char> st;
-        for(int i = 0 ; i < s.size(); i++){
-            if(isalnum(s[i])){
-                st.push(tolower(s[i]));
-            }
-        }
+        int start = 0;
+        int end = s.length() - 1;
 
-        for(int i = 0; i < s.size(); i++){
-            if(isalnum(s[i])){
-                if(tolower(s[i]) != st.top()){
-                    return false;
-                }
-                st.pop();
+        while(start <= end){
+            if(!isalnum(s[start])) {start++; continue;}
+            if(!isalnum(s[end])){end--; continue;}
+            if(tolower(s[start]) != tolower(s[end])) return false;
+            else{
+                start++;
+                end--;
             }
         }
         return true;
