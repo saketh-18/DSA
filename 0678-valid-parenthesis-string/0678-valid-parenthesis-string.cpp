@@ -1,24 +1,29 @@
 class Solution {
 public:
-    bool checkValidString(string s) {
-        int min = 0, max = 0;
-        for (char c : s){
-            if(c == '('){
-                min++;
-                max++;
-            } else if(c == ')'){
-                min--;
-                max--;
-            } else {
-                min--;
-                max++;
-            }
+    bool dfs(int i, string &s, int count, vector<vector<int>> &dp){
+        if(count < 0) return false;
 
-
-            if(min < 0) min = 0;
-            if (max < 0) return false;
+        if(i == s.size()){
+            return count == 0;
         }
 
-        return min == 0;
+        if(dp[i][count] != -1) return dp[i][count];
+
+        if(s[i] == '(') {
+            return dfs(i+1, s, count + 1, dp);
+        } 
+        if(s[i] == ')') {
+            return dfs(i+1,s,count-1, dp);
+        }
+
+        bool empty = dfs(i+1,s,count, dp);
+        bool open = dfs(i+1, s, count+1, dp);
+        bool close = dfs(i+1,s,count-1, dp);
+
+        return dp[i][count] = empty || open || close;
+    }
+    bool checkValidString(string s) {
+        vector<vector<int>> dp(s.size(), vector<int>(s.size() + 1,-1));
+        return dfs(0,s,0,dp);
     }
 };
