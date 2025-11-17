@@ -1,24 +1,24 @@
 class Solution {
 public:
     bool checkValidString(string s) {
-        int star = 0;
-        stack<int> st;
-
-        for(char c : s){
-            if(c == '(') st.push('(');
-            else if(c == ')') {
-                if(!st.empty()){
-                    st.pop();
-                } else {
-                    if(star > 0) star--;
-                }
+        int min = 0, max = 0;
+        for (char c : s){
+            if(c == '('){
+                min++;
+                max++;
+            } else if(c == ')'){
+                min--;
+                max--;
             } else {
-                star++;
+                min--;
+                max++;
             }
+
+
+            if(min < 0) min = 0;
+            if (max < 0) return false;
         }
 
-        if(st.empty()) return true;
-        if(star >= st.size()) return true;
-        return false;
+        return min == 0;
     }
 };
