@@ -1,18 +1,17 @@
 class Solution {
 public:
-    bool dfs(int i, vector<int> &nums, vector<int> &dp){
-        if(i >= nums.size() - 1) return true;
-
-        if(nums[i] == 0) return false;
-
-        if(dp[i] != -1) return dp[i];
-        for(int j = i + 1; j <= i + nums[i]; j++){
-            if(dfs(j,nums,dp)) return dp[j] =  true;
-        } 
-        return dp[i] = false;
-    }
     bool canJump(vector<int>& nums) {
-        vector<int> dp(nums.size() , -1);
-        return dfs(0,nums,dp);
+        int n = nums.size();
+        vector<bool> dp(n, false);
+        // tabulation
+        // base case is setting the last index to true
+        dp[n - 1] = true;
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i + 1; j <= i + nums[i]; j++) {
+                if ((j < n) && dp[j]) dp[i] = true;
+            }
+        }
+        return dp[0];
     }
 };
