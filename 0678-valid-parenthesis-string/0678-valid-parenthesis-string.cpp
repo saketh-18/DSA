@@ -10,10 +10,10 @@ public:
         if(dp[i][count] != -1) return dp[i][count];
 
         if(s[i] == '(') {
-            return dfs(i+1, s, count + 1, dp);
+            return dp[i][count] = dfs(i+1, s, count + 1, dp);
         } 
         if(s[i] == ')') {
-            return dfs(i+1,s,count-1, dp);
+            return dp[i][count] = dfs(i+1,s,count-1, dp);
         }
 
         bool empty = dfs(i+1,s,count, dp);
