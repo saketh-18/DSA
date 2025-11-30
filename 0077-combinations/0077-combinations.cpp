@@ -6,7 +6,7 @@ public:
             return ;
         }
 
-        if(n <= 0) return;
+        if(n <= 0 || res.size() > k) return;
 
         //take the current n and reduce the n and not take and reduce it
         if(res.size() < k){
