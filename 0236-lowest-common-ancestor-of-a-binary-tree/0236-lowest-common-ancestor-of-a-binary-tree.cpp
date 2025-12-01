@@ -9,35 +9,32 @@
  */
 class Solution {
 public:
-    unordered_map<TreeNode*,TreeNode*> ans;
-    void ancestor(TreeNode* root, TreeNode* anc){
-        if(root == nullptr) return;
+    void search(TreeNode* root, TreeNode* p, TreeNode* q, bool &vis_p, bool &vis_q){
+        if(!root) return;
 
-        ans[root] = anc;
-        ancestor(root->left,root);
-        ancestor(root->right,root);
+        if(root == p) vis_p = true;
+        if(root == q) vis_q = true;
+        if(vis_p && vis_q) return ;
+        search(root->left, p, q, vis_p, vis_q);
+        search(root->right, p, q, vis_p, vis_q);
+    }
+    TreeNode* dfs(TreeNode* root, TreeNode* p, TreeNode* q){
+        if(!root) return nullptr;
+        bool a = false, b = false;
+        if(root == p) a = true;
+        if(root == q) b = true;
+        if(a || b){
+            return root;
+        }
+        search(root->left, p, q, a, b);
+        if(a && b){
+            return dfs(root->left, p, q);
+        }
+        if(a || b) return root;
+        return dfs(root->right, p, q);
     }
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if(root == nullptr) return nullptr;
-        ancestor(root,nullptr);
-        if(ans[p] == ans[q]) return ans[p];
-        unordered_map<TreeNode* , TreeNode*> right;
-        vector<pair<TreeNode*,TreeNode*>> left;
-        
-        TreeNode* temp = p;
-        TreeNode* temp2 = q;
-        while(ans[temp] != nullptr){
-            left.push_back({temp,ans[temp]});
-            temp = ans[temp];
-        }
-        while(ans[temp2] != nullptr){
-            right[temp2] = ans[temp2];
-            temp2 = ans[temp2];
-        }
-        
-        for(const auto& pair : left){
-            if(right.find(pair.first) != right.end()) return pair.first;
-        }
-        return root;
+        if(root == p || root == q) return root;
+        return dfs(root, p, q);
     }
 };
