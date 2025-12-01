@@ -9,32 +9,34 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
 class Solution {
 public:
     int widthOfBinaryTree(TreeNode* root) {
-        long long maxSum = 0;
-        queue<pair<TreeNode* , long long>> q;
-        q.push({root , 0});
+        if(root == nullptr) return 0;
+        queue<tuple<TreeNode*,unsigned long long, unsigned long long>> que;
+        que.push({root,1,0}); // Node, value of node(accr. to heap tree), level
+        unsigned long long prevLevel = 0, prevNum = 1;
+        // creating a sort of heap tree and then computing max nodes in every level and getting the max 
+        unsigned long long res = 0;
+        while(!que.empty()){
+            auto [node, val, level] = que.front();
+            que.pop();
 
-        while(!q.empty()){
-            int size = q.size();
-            long long sIndex = q.front().second;
-            long long eIndex = q.back().second;
-            long long diff = eIndex - sIndex + 1;
-            maxSum = max(maxSum , diff);
+            if(level > prevLevel){  //this will execute at the start of every level except first (0th)
+                prevLevel = level;
+                prevNum = val;
+            }
 
-            for(int i = 0 ; i < size; i++){
-                pair<TreeNode* , long long> current = q.front();
-                q.pop();
-                long long normIndex = current.second - sIndex;
-                if(current.first->left){
-                    q.push({current.first->left , 2*normIndex}); 
-                }
-                if(current.first->right){
-                    q.push({current.first->right , 2*normIndex + 1}); 
-                }
+            res = max(res, val - prevNum + 1);
+            
+            if(node->left){
+                que.push({node->left, val*2, level+1});
+            }
+            if(node->right){
+                que.push({node->right, val*2 + 1, level + 1});
             }
         }
-        return (int)maxSum;
+        return res;
     }
 };
