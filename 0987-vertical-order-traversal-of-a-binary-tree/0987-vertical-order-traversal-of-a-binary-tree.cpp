@@ -11,30 +11,38 @@
  */
 class Solution {
 public:
-    //1 recursion to find the max right depth and max left depth
-    int minc = INT_MAX, maxc = INT_MIN;
-    void traverse(TreeNode* root, int cur){
-        if(root == nullptr) return;
-        minc = min(minc,cur);
-        maxc = max(maxc,cur);
-        traverse(root->left,cur-1);
-        traverse(root->right,cur+1);
-    }
-     void fill(TreeNode* root, int cur, int row, vector<vector<pair<int,int>>> &ans){
-        if(!root) return;
-        ans[cur - minc].push_back({row, root->val});
-        fill(root->left, cur - 1, row + 1, ans);
-        fill(root->right, cur + 1, row + 1, ans);
+    unordered_map<int,vector<pair<int,int>>> mat;
+    int index = 0, maxIndex = 0;
+    void dfs(TreeNode* root, int col, int row){
+        if(!root) return ;
+        index = min(index, col);
+        maxIndex = max(maxIndex, col);
+        mat[col].push_back({row,root->val});
+        dfs(root->left, col-1, row+1);
+        dfs(root->right, col+1, row+1);
     }
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-        traverse(root,0);
-        int cols = maxc - minc + 1;
-        vector<vector<int>> ans(cols);
-        vector<vector<pair<int,int>>> temp(cols);
-        fill(root,0,0,temp);
-        for(int i = 0; i < cols; i++){
-            sort(temp[i].begin(), temp[i].end()); 
-            for(auto &p : temp[i]) ans[i].push_back(p.second);
+        // traverse the whole tree and find the number of columns
+        dfs(root,0,0);
+        cout << maxIndex << "  " << index << endl;
+        if(index < 0){
+            index = -index;
+        }
+        vector<vector<int>> ans(maxIndex + index + 1);
+        for(auto &pos : mat){
+            // cout << "row " << pos.first << " ";
+            sort(pos.second.begin(), pos.second.end(), [&](pair<int,int> &a, pair<int,int> &b){
+                if(a.first == b.first){
+                    return a.second < b.second;
+                }
+                return a.first < b.first;
+            });
+            for(pair<int,int> i : pos.second){
+                // cout << i << " ";
+                cout << pos.first << " " << index << endl;
+                ans[pos.first + index].push_back(i.second);
+            }
+            // cout << endl;
         }
         return ans;
     }
